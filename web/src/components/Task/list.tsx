@@ -34,18 +34,22 @@ export function TaskList() {
             <CardTitle>{task.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>{task.description}</p>
-            <p className="text-sm text-gray-500 mt-2">Status: {task.statut}</p>
-            <div className="flex space-x-2 mt-4">
+            <p className="text-sm text-gray-500 mt-2">
+              Description: {task.description}
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Status: {task.statut}
+            </p>
+            <div className="flex justify-end space-x-2 mt-4">
               <Button
                 variant="destructive"
                 onClick={(e) => {
                   e.preventDefault();
-                  e.stopPropagation()
+                  e.stopPropagation();
                   deleteTask(task.id!);
                 }}
               >
-                Delete Task
+                Delete
               </Button>
             </div>
           </CardContent>
@@ -61,9 +65,6 @@ export function TaskList() {
         <CardHeader>
           <CardTitle>Add new task</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p>Add new taks</p>
-        </CardContent>
       </Card>
       <TaskEditDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>

@@ -2,7 +2,7 @@ FROM node:18 AS development
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN yarn global add pnpm && \
-  pnpm install --no-frozen-lockfile && \
+  pnpm install && \
   pnpm store prune
 COPY . .
 CMD ["pnpm", "run", "start:dev"]

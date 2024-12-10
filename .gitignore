@@ -1,5 +1,5 @@
 
-
+/**/*/.next
 /node_modules
 /.pnp
 .pnp.*
@@ -37,3 +37,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/docker

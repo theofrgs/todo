@@ -1,0 +1,51 @@
+services:
+  api:
+    container_name: api-dev
+    build:
+      context: ./api
+      target: development
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    env_file:
+      - ./api/.env
+    environment:
+      - DB_HOST=database
+    restart: unless-stopped
+    networks:
+      - default
+
+  database:
+    image: mariadb:latest
+    restart: always
+    container_name: mariadb-dev
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_INIT_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - ./docker/volumes/data:/var/lib/mysql
+    networks:
+      - default
+
+  web:
+    container_name: web
+    build:
+      context: ./web
+      target: development
+    volumes:
+      - ./web:/usr/src/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./web/.env
+    networks:
+      - default
+    restart: always
+
+networks:
+  default:
+    driver: bridge

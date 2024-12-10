@@ -23,7 +23,7 @@ async function fetchTasks(): Promise<Task[]> {
 }
 
 export default async function TasksPage() {
-  // TODO add caching logic
+  // TODO add caching logic => tanstack query
   // const tasks = await fetchTasks();
 
   return (

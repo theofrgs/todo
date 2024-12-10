@@ -1,13 +1,12 @@
 import { useTaskStore } from "@/stores/useTaskStore";
 import { Label } from "@radix-ui/react-label";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -18,8 +17,7 @@ const validationSchema = Yup.object({
   title: Yup.string()
     .min(3, "Title must be at least 3 characters long")
     .required("Title is required"),
-  description: Yup.string()
-    .required("Description is required"),
+  description: Yup.string().required("Description is required"),
   statut: Yup.string().required("Status is required"),
 });
 
@@ -31,26 +29,35 @@ type Props = {
 export function TaskEditDialog({ isOpen, setIsOpen }: Props) {
   const { updateTask, addTask, setSelectedTask, selectedTask } = useTaskStore();
 
-  const initialValues = {
-    title: selectedTask?.title || "",
-    description: selectedTask?.description || "",
-    statut: selectedTask?.statut || "",
-  };
+  const initialValues = useMemo(
+    () => ({
+      title: selectedTask?.title || "",
+      description: selectedTask?.description || "",
+      statut: selectedTask?.statut || "",
+    }),
+    [selectedTask?.description, selectedTask?.statut, selectedTask?.title]
+  );
 
-  const handleSubmit = async (values: typeof initialValues, actions: any) => {
-    if (selectedTask) {
-      updateTask(selectedTask.id!, values);
-    } else addTask(values);
-    setIsOpen(false);
-    actions.resetForm();
-  };
+  const handleSubmit = useCallback(
+    async (values: typeof initialValues, actions: any) => {
+      if (selectedTask) {
+        updateTask(selectedTask.id!, values);
+      } else addTask(values);
+      setIsOpen(false);
+      actions.resetForm();
+    },
+    [addTask, selectedTask, setIsOpen, updateTask]
+  );
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    if (!open) {
-      setSelectedTask(null);
-    }
-  };
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open);
+      if (!open) {
+        setSelectedTask(null);
+      }
+    },
+    [setIsOpen, setSelectedTask]
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>

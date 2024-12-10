@@ -13,10 +13,7 @@ export function TaskList() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const refetch = () => {
-      fetchTasks();
-    };
-    refetch();
+    fetchTasks();
   }, [fetchTasks]);
 
   return (
@@ -37,9 +34,7 @@ export function TaskList() {
             <p className="text-sm text-gray-500 mt-2">
               Description: {task.description}
             </p>
-            <p className="text-sm text-gray-500 mt-2">
-              Status: {task.statut}
-            </p>
+            <p className="text-sm text-gray-500 mt-2">Status: {task.statut}</p>
             <div className="flex justify-end space-x-2 mt-4">
               <Button
                 variant="destructive"
